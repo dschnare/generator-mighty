@@ -70,40 +70,75 @@ gulp.task("bundle", ["build"], function (done) {
 
 // Helpers
 
+// When using glob() the path must only use UNIX path separators.
+// We also remove any trailing slashes.
 function globifyPath(path) {
 	return path.replace(/\/|\\$/, "").replace(/\\/g, "/");
 }
 
 function buildEmail(email, callback) {
-	var markup = require("./" + email).render();
-	var prefixedMarkup = "";
-	var devMarkup = "";
+	var body = require("./" + email).render();
 	var globDest = globifyPath(cfg.dest);
 	var basename = path.basename(email, ".js");
 	var dirname = path.dirname(email).replace(globDest + "/scripts/");
-	var markupFilename, prefixedMarkupFilename, devMarkupFilename;
+	var developmentFilename = path.join(cfg.dest, "html", dirname, basename + ".dev.html");
+	var testingFilename = path.join(cfg.dest, "html", dirname, basename + ".test.html")
+	var productionFilename = path.join(cfg.dest, "html", dirname, basename + ".html");
 
-	markup = html.prettyPrint(markup, { indent_size: 2 });
-	prefixedMarkup = prefixImageReferencesInHtml(markup);
+	body = html.prettyPrint(body, { indent_size: 2 });
 
-	// When testing locally we want our images to be resolved correctly
-	// so insert a <base> element to ensure this happens.
+	loadTemplate(body, function (error, emailHtml) {
+		if (error) {
+			callback(error);
+		} else {
+			async.parallel({
+				development: async.apply(developmentTransform, emailHtml, dirname),
+				testing: async.apply(testingTransform, emailHtml),
+				production: async.apply(productionTransform, emailHtml)
+			}, function (error, results) {
+				if (error) {
+					callback(error);
+				} else {
+					async.parallel([
+						async.apply(fs.writeFile, developmentFilename, results.development),
+						async.apply(fs.writeFile, testingFilename, results.testing),
+						async.apply(fs.writeFile, productionFilename, results.production)
+					], callback);
+				}
+			});
+		}
+	});
+}
+
+function loadTemplate(body, callback) {
+	var opts = { encoding: "utf8" };
+
+	async.parallel({
+		styles: async.apply(fs.readFile, path.join(cfg.dest, "styles", "style.css"), opts),
+		html: async.apply(fs.readFile, cfg.template, opts)
+	}, function (error, results) {
+		if (error) {
+			callback(error);
+		} else {
+			callback(null, results.html
+				.replace("%styles%", results.styles)
+				.replace("%body%", body));
+		}
+	});
+}
+
+function developmentTransform(html, dirname, callback) {
 	var baseUrl = path.relative(path.join(cfg.dest, "html", dirname), path.dirname(cfg.images));
-	devMarkup = "<base href=\"" + baseUrl + "\" />\n" + markup;
+	callback(null, html.replace("<body[^>]*>", "$1\n<base href=\"" + baseUrl + "\" />"));
+}
 
-	markupFilename = path.join(cfg.dest, "html", dirname, basename + ".html");
-	prefixedMarkupFilename = path.join(cfg.dest, "html", dirname, basename + ".test.html");
-	devMarkupFilename = path.join(cfg.dest, "html", dirname, basename + ".dev.html");
+function testingTransform(html, callback) {
+	html = prefixImageReferencesInHtml(html);
+	inlineCss(html, callback);
+}
 
-	// TODO: Insert styles
-	// TODO: Insert markup
-	// TODO: Inline styles via Campaign Monitor
-
-	async.parallel([
-		async.apply(fs.writeFile, markupFilename, markup),
-		async.apply(fs.writeFile, prefixedMarkupFilename, prefixedMarkup)
-		async.apply(fs.writeFile, devMarkupFilename, devMarkup)
-	], callback);
+function productionTransform(html) {
+	inlineCss(html, callback);
 }
 
 function prefixImageReferencesInHtml(html) {
