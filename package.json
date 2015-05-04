@@ -1,0 +1,35 @@
+{
+  "name": "generator-mighty",
+  "version": "0.1.0",
+  "description": "Mighty Email generator that uses mighty-mail as its rendering engine.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "generator/app",
+    "generator/email"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dschnare/generator-mighty"
+  },
+  "keywords": [
+    "yeoman-generator",
+    "email",
+    "boilerplate",
+    "html",
+    "css",
+    "sass",
+    "less",
+    "responsive"
+  ],
+  "author": "Darren Schnare <schnare.d@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dschnare/generator-mighty/issues"
+  },
+  "homepage": "https://github.com/dschnare/generator-mighty",
+  "devDependencies": {
+    "yeoman-generator": "^0.19.2"
+  }
+}
