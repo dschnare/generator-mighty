@@ -24,7 +24,11 @@ module.exports = generators.Base.extend({
 		});
 	},
 	createGitignore: function () {
-		this.fs.write(this.destinationPath(".gitignore"), "node_modules");
+		this.fs.write(this.destinationPath(".gitignore"), [
+			"node_modules",
+			"build/scripts",
+			"build/styles"].join("\n")
+		);
 	},
 	createEslintRc: function () {
 		this.fs.write(this.destinationPath(".eslintrc"), JSON.stringify({
