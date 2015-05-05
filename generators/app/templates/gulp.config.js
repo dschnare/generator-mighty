@@ -10,6 +10,7 @@ function config() {
 	cfg.template = "template.html";
 	cfg.imageBaseUrl = "";
 
+	cfg.styles = "styles";
 	cfg.images = "images";
 	cfg.dest = "build";
 

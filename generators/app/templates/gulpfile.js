@@ -3,10 +3,13 @@
 
 var fs = require("fs");
 var path = require("path");
-var mkdir = require("mkdir-p");
+var mkdir = require("mkdirp");
 var html = require("html");
 var EasyZip = require("easy-zip").EasyZip;
 var request = require("superagent");
+var glob = require("glob");
+var async = require("async");
+var React = require("react");
 
 var gulp = require("gulp");
 var cfg = require("./gulp.config");
@@ -32,22 +35,28 @@ gulp.task("compile", ["lint"], function () {
 gulp.task("less:build", function () {
 	return gulp.src(globifyPath(cfg.styles) + "/styles.less")
 		.pipe(less())
-		.pipe(gulp.dest(path.join(config.dest, "styles")));
+		.pipe(gulp.dest(path.join(cfg.dest, "styles")));
 });
 
 gulp.task("sass:build", function () {
-	return gulp.src(globifyPath(config.styles) + "/styles.scss")
+	return gulp.src(globifyPath(cfg.styles) + "/styles.scss")
 		.pipe(sass())
-		.pipe(gulp.dest(path.join(config.dest, "styles")));
+		.pipe(gulp.dest(path.join(cfg.dest, "styles")));
 });
 
 gulp.task("build", ["compile", "less:build", "sass:build"], function (done) {
 	var globDest = globifyPath(cfg.dest);
 
-	glob(globDest + "/scripts/**/*.js", function (emails) {
-		async.parallel(emails.map(function (email) {
-			return async.apply(buildEmail, email);
-		}), done);
+	glob(globDest + "/scripts/**/*.js", function (error, emails) {
+		mkdir(path.join(cfg.dest, "html"), function (err) {
+			if (err) {
+				done(err);
+			} else {
+				async.parallel(emails.map(function (email) {
+					return async.apply(buildEmail, email);
+				}), done);
+			}
+		});
 	});
 });
 
@@ -57,6 +66,7 @@ gulp.task("bundle", ["build"], function (done) {
 			done(error);
 		} else {
 			async.series([
+				async.apply(mkdir, path.join(cfg.dest, "zips")),
 				async.apply(bundleAllEmails, emails),
 				function (callback) {
 					async.parallel(emails.map(function (email) {
@@ -65,8 +75,10 @@ gulp.task("bundle", ["build"], function (done) {
 				}
 			], done);
 		}
-	})
+	});
 });
+
+gulp.task("default", ["bundle"]);
 
 // Helpers
 
@@ -77,10 +89,10 @@ function globifyPath(path) {
 }
 
 function buildEmail(email, callback) {
-	var body = require("./" + email).render();
+	var body = React.renderToStaticMarkup(require("./" + email));
 	var globDest = globifyPath(cfg.dest);
 	var basename = path.basename(email, ".js");
-	var dirname = path.dirname(email).replace(globDest + "/scripts/");
+	var dirname = path.dirname(email).replace(globDest + "/scripts", "");
 	var developmentFilename = path.join(cfg.dest, "html", dirname, basename + ".dev.html");
 	var testingFilename = path.join(cfg.dest, "html", dirname, basename + ".test.html")
 	var productionFilename = path.join(cfg.dest, "html", dirname, basename + ".html");
@@ -114,7 +126,7 @@ function loadTemplate(body, callback) {
 	var opts = { encoding: "utf8" };
 
 	async.parallel({
-		styles: async.apply(fs.readFile, path.join(cfg.dest, "styles", "style.css"), opts),
+		styles: async.apply(fs.readFile, path.join(cfg.dest, "styles", "styles.css"), opts),
 		html: async.apply(fs.readFile, cfg.template, opts)
 	}, function (error, results) {
 		if (error) {
@@ -129,7 +141,7 @@ function loadTemplate(body, callback) {
 
 function developmentTransform(html, dirname, callback) {
 	var baseUrl = path.relative(path.join(cfg.dest, "html", dirname), path.dirname(cfg.images));
-	callback(null, html.replace("<body[^>]*>", "$1\n<base href=\"" + baseUrl + "\" />"));
+	callback(null, html.replace(/(<body[^>]*>)/, "$1\n<base href=\"" + baseUrl + "\" />"));
 }
 
 function testingTransform(html, callback) {
@@ -137,7 +149,7 @@ function testingTransform(html, callback) {
 	inlineCss(html, callback);
 }
 
-function productionTransform(html) {
+function productionTransform(html, callback) {
 	inlineCss(html, callback);
 }
 
@@ -183,14 +195,13 @@ function bundleEmail(email, callback) {
 
 function bundleAllEmails(emails, callback) {
 	var zip = new EasyZip();
-	var filename = path.basename(email);
 
 	zip.zipFolder(cfg.images, function (error) {
 		if (error) {
 			callback(error);
 		} else {
 			async.eachSeries(emails, function (email, cb) {
-				zip.addFile(filename, email, cb);
+				zip.addFile(path.basename(email), email, cb);
 			}, function (error) {
 				if (error) {
 					callback(error);
@@ -202,23 +213,15 @@ function bundleAllEmails(emails, callback) {
 	});
 }
 
-function inlineCss(emailFile, callback) {
-	fs.readFile(emailFile, {
-		encoding: "utf8"
-	}, function (error, html) {
-		if (error) {
-			callback(error);
-		} else {
-			request.post("http://inliner.cm/inline.php")
-				.type("form")
-				.send({ code: html })
-				.end(function (err, response) {
-					if (err) {
-						callback(err);
-					} else {
-						callback(null, response.body.HTML);
-					}
-				});
-		}
-	});
+function inlineCss(html, callback) {
+	request.post("http://inliner.cm/inline.php")
+		.type("form")
+		.send({ code: html })
+		.end(function (err, response) {
+			if (err) {
+				callback(err);
+			} else {
+				callback(null, response.body.HTML);
+			}
+		});
 }
