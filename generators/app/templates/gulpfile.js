@@ -14,8 +14,11 @@ var React = require("react");
 var gulp = require("gulp");
 var cfg = require("./gulp.config");
 var eslint = require("gulp-eslint");
+<% if (sass) { %>
 var sass = require("gulp-sass");
+<% } else { %>
 var less = require("gulp-less");
+<% } %>
 var react = require("gulp-react");
 
 
@@ -32,19 +35,21 @@ gulp.task("compile", ["lint"], function () {
 		.pipe(gulp.dest(path.join(cfg.dest, "scripts")));
 });
 
-gulp.task("less:build", function () {
-	return gulp.src(globifyPath(cfg.styles) + "/styles.less")
-		.pipe(less())
-		.pipe(gulp.dest(path.join(cfg.dest, "styles")));
-});
-
-gulp.task("sass:build", function () {
+<% if (sass) { %>
+gulp.task("styles:build", function () {
 	return gulp.src(globifyPath(cfg.styles) + "/styles.scss")
 		.pipe(sass())
 		.pipe(gulp.dest(path.join(cfg.dest, "styles")));
 });
+<% } else { %>
+gulp.task("styles:build", function () {
+	return gulp.src(globifyPath(cfg.styles) + "/styles.less")
+		.pipe(less())
+		.pipe(gulp.dest(path.join(cfg.dest, "styles")));
+});
+<% } %>
 
-gulp.task("build", ["compile", "less:build", "sass:build"], function (done) {
+gulp.task("build", ["compile", "styles:build"], function (done) {
 	var globDest = globifyPath(cfg.dest);
 
 	glob(globDest + "/scripts/**/*.js", function (error, emails) {

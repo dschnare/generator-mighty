@@ -18,10 +18,13 @@ module.exports = generators.Base.extend({
 		mkdir.sync(this.destinationPath("build"));
 	},
 	copyFiles: function () {
-		this.fs.copy(this.templatePath(), this.destinationPath());
+		this.fs.copy(this.templatePath("gulp.config.js"), this.destinationPath("gulp.config.js"));
+		this.fs.copyTpl(this.templatePath("gulpfile.js"), this.destinationPath("gulpfile.js"), {
+			sass: this.options.sass
+		});
 	},
 	createGitignore: function () {
-		this.fs.write(this.destinationPath(".gitignore"), "node_modules");	
+		this.fs.write(this.destinationPath(".gitignore"), "node_modules");
 	},
 	createEslintRc: function () {
 		this.fs.write(this.destinationPath(".eslintrc"), JSON.stringify({
@@ -33,7 +36,7 @@ module.exports = generators.Base.extend({
 				"browser": true,
 				"node": true
 			}
-		}));	
+		}));
 	},
 	copyStyles: function () {
 		var styleType = this.options.sass ? "sass" : "less";
@@ -49,9 +52,10 @@ module.exports = generators.Base.extend({
 			name: path.basename(this.destinationPath()),
 			"private": true,
 			version: "0.1.0"
-		}));	
+		}));
 	},
 	installDeps: function () {
+		var styleDeps = this.options.sass ? "gulp-sass" : "gulp-less";
 		var deps = [
 			"react",
 			"async",
@@ -64,8 +68,7 @@ module.exports = generators.Base.extend({
 			"gulp",
 			"gulp-eslint",
 			"gulp-react",
-			"gulp-sass",
-			"gulp-less",
+			styleDeps,
 			"html"
 		];
 
