@@ -7,8 +7,8 @@
 var React = require("react");
 var m = require("mighty-mail");
 
-
-module.exports = (
+exports.subject = "The email subject"
+exports.body = (
 	<m.Frame border={0}>
 		<m.Row>
 			<m.Col>Hello World!</m.Col>

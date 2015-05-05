@@ -94,7 +94,9 @@ function globifyPath(path) {
 }
 
 function buildEmail(email, callback) {
-	var body = React.renderToStaticMarkup(require("./" + email));
+	var theEmail = require("./" + email);
+	var subject = theEmail.subject;
+	var body = React.renderToStaticMarkup(theEmail.body);
 	var globDest = globifyPath(cfg.dest);
 	var basename = path.basename(email, ".js");
 	var dirname = path.dirname(email).replace(globDest + "/scripts", "");
@@ -104,7 +106,7 @@ function buildEmail(email, callback) {
 
 	body = html.prettyPrint(body, { indent_size: 2 });
 
-	loadTemplate(body, function (error, emailHtml) {
+	loadTemplate(subject, body, function (error, emailHtml) {
 		if (error) {
 			callback(error);
 		} else {
@@ -127,7 +129,7 @@ function buildEmail(email, callback) {
 	});
 }
 
-function loadTemplate(body, callback) {
+function loadTemplate(subject, body, callback) {
 	var opts = { encoding: "utf8" };
 
 	async.parallel({
@@ -138,6 +140,7 @@ function loadTemplate(body, callback) {
 			callback(error);
 		} else {
 			callback(null, results.html
+				.replace("%subject%", subject)
 				.replace("%styles%", results.styles)
 				.replace("%body%", body));
 		}
@@ -146,7 +149,7 @@ function loadTemplate(body, callback) {
 
 function developmentTransform(html, dirname, callback) {
 	var baseUrl = path.relative(path.join(cfg.dest, "html", dirname), path.dirname(cfg.images));
-	callback(null, html.replace(/(<body[^>]*>)/, "$1\n<base href=\"" + baseUrl + "\" />"));
+	callback(null, html.replace(/(<body[^>]*>)/, "$1\n  <base href=\"" + baseUrl + "\" />"));
 }
 
 function testingTransform(html, callback) {
@@ -159,8 +162,17 @@ function productionTransform(html, callback) {
 }
 
 function prefixImageReferencesInHtml(html) {
-	// TODO: Implement
-	return html;
+	function replace($0, $1, $2) {
+		if ($2.indexOf("http") === 0) {
+			return $0;
+		}
+
+		return path.join($1, cfg.imageBaseUrl, $2).replace(/\\/g, "/");
+	}
+
+	return html
+		.replace(/((?:background|src)="")([^""]+)/, replace)
+		.replace(/(url\(['"]?)([^'"\)]+)/, replace);
 }
 
 function getAllProductionEmails(callback) {
