@@ -1,6 +1,14 @@
 # Changelog
 
 
+## 0.1.2
+
+*May 5, 2015*
+
+- Add trailing space to email.js template file.
+- Added build/scripts and build/styles to mighty project .gitignore.
+
+
 ## 0.1.1
 
 *May 5, 2015*
