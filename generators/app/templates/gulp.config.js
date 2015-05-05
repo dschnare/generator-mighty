@@ -7,6 +7,7 @@ var glob = require("glob");
 function config() {
 	var cfg = {};
 
+	cfg.template = "template.html";
 	cfg.imageBaseUrl = "";
 
 	cfg.images = "images";
