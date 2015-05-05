@@ -1,6 +1,6 @@
 {
   "name": "generator-mighty",
-  "version": "0.1.3",
+  "version": "0.2.1",
   "description": "Mighty Email generator that uses mighty-mail as its rendering engine.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
