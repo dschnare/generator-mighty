@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.2
+
+*May 6, 2015*
+
+- Resolve issue with image prefixing not using the global Regex flag and the substition constructed the path incorrectly.
+
+
 ## 0.2.1
 
 *May 5, 2015*

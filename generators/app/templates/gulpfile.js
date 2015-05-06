@@ -167,12 +167,12 @@ function prefixImageReferencesInHtml(html) {
 			return $0;
 		}
 
-		return path.join($1, cfg.imageBaseUrl, $2).replace(/\\/g, "/");
+		return $1 + path.join(cfg.imageBaseUrl, $2).replace(/\\/g, "/");
 	}
 
 	return html
-		.replace(/((?:background|src)="")([^""]+)/, replace)
-		.replace(/(url\(['"]?)([^'"\)]+)/, replace);
+		.replace(/((?:background|src)=")([^"]+)/g, replace)
+		.replace(/(url\(['"]?)([^'"\)]+)/g, replace);
 }
 
 function getAllProductionEmails(callback) {
