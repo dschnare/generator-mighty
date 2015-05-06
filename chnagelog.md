@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.3
+
+*May 6, 2015*
+
+- Resolve issue with Outlook conditional if blocks being mangled by HTML prettifier.
+
+
 ## 0.2.2
 
 *May 6, 2015*

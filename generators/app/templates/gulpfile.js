@@ -105,6 +105,8 @@ function buildEmail(email, callback) {
 	var productionFilename = path.join(cfg.dest, "html", dirname, basename + ".html");
 
 	body = html.prettyPrint(body, { indent_size: 2 });
+	// Make sure there is no extra whitespace introduced in Outlook conditional if blocks.
+	body = body.replace(/<!--\[if\s+mso/g, "<!--[if mso");
 
 	loadTemplate(subject, body, function (error, emailHtml) {
 		if (error) {
