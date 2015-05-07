@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.6
+
+*May 6, 2015*
+
+- Update mighty-mail to version 0.3.2.
+
+
 ## 0.2.5
 
 *May 6, 2015*
