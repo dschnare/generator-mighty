@@ -1,6 +1,6 @@
 {
   "name": "generator-mighty",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "Mighty Email generator that uses mighty-mail as its rendering engine.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -33,7 +33,7 @@
     "yeoman-generator": "^0.19.2"
   },
   "dependencies": {
-    "mighty-mail": "^0.4.3",
+    "mighty-mail": "^0.4.4",
     "mkdirp": "^0.5.0"
   }
 }

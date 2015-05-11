@@ -7,6 +7,8 @@
 var React = require("react");
 var m = require("mighty-mail");
 
+m.Image.imageBasePath = ".";
+
 exports.subject = "The email subject"
 exports.body = (
 	<m.Frame border={0}>
