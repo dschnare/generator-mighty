@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.0
+
+*May 16, 2015*
+
+- Update mighty-mail to version 1.1.0
+- Add convenient component aliases to the email template.
+
+
+## 0.2.13
+
+*May 12, 2015*
+
+- Fix image base URLs that start with http: protocol; after the prefix they did not have "//".
+
+
 ## 0.2.12
 
 *May 8, 2015*

@@ -106,7 +106,7 @@ function buildEmail(email, callback) {
 
 	body = html.prettyPrint(body, { indent_size: 2 });
 	// Make sure there is no extra whitespace introduced in Outlook conditional if blocks.
-	body = body.replace(/<!--\[if\s+mso/g, "<!--[if mso");
+	body = body.replace(/<!--\[if\s+/g, "<!--[if ");
 
 	loadTemplate(subject, body, function (error, emailHtml) {
 		if (error) {
@@ -169,7 +169,7 @@ function prefixImageReferencesInHtml(html) {
 			return $0;
 		}
 
-		return $1 + path.join(cfg.imageBaseUrl, $2).replace(/\\/g, "/");
+		return $1 + path.join(cfg.imageBaseUrl, $2).replace(/\\/g, "/").replace(/http(s)?:\//, "http$1://");
 	}
 
 	return html
