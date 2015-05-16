@@ -43,7 +43,7 @@ var Button = m.Button;
 
 // The actual email exports.
 
-exports.subject = "The email subject"
+exports.subject = "The email subject";
 
 exports.body = (
 	<Frame borderColor="#d7d7d7">

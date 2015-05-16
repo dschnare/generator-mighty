@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1
+
+*May 16, 2015*
+
+- Add missing semicolon in email template.
+
+
 ## 0.3.0
 
 *May 16, 2015*
