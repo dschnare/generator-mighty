@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.3
+
+*May 19, 2015*
+
+- Resolve yeoman-generator dependency listing in devDepenedencies.
+
+
 ## 0.3.2
 
 *May 19, 2015*
