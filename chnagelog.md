@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.2
+
+*May 19, 2015*
+
+- Resolve files pathing issues.
+
+
 ## 0.3.1
 
 *May 16, 2015*
