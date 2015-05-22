@@ -33,7 +33,7 @@ var Ol = m.OrderedList;
 var Li = m.ListItem;
 var Img = m.Image;
 var P = m.Para;
-var Div = m.ParaBlock;
+var Block = m.ParaBlock;
 var Hr = m.Divider;
 var MeidaObject = m.MediaObject;
 var Hero = m.Hero;
@@ -41,7 +41,7 @@ var Raw = m.RawHtml;
 var Button = m.Button;
 
 
-// The actual email exports.
+// The actual email module.
 
 exports.subject = "The email subject";
 

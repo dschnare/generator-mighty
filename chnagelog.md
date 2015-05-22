@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.4
+
+- Update Readme with more docs.
+- Add docs to gulpfile and gulpfile.config for the app generator.
+- Add compiledStyles, devSuffix, testSuffix and prodSuffix to gulpfile.config for the app generator.
+
+
 ## 0.3.3
 
 *May 19, 2015*

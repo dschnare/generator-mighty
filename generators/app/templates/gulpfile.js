@@ -100,9 +100,9 @@ function buildEmail(email, callback) {
 	var globDest = globifyPath(cfg.dest);
 	var basename = path.basename(email, ".js");
 	var dirname = path.dirname(email).replace(globDest + "/scripts", "");
-	var developmentFilename = path.join(cfg.dest, "html", dirname, basename + ".dev.html");
-	var testingFilename = path.join(cfg.dest, "html", dirname, basename + ".test.html")
-	var productionFilename = path.join(cfg.dest, "html", dirname, basename + ".html");
+	var developmentFilename = path.join(cfg.dest, "html", dirname, basename + cfg.devSuffix);
+	var testingFilename = path.join(cfg.dest, "html", dirname, basename + cfg.testSuffix)
+	var productionFilename = path.join(cfg.dest, "html", dirname, basename + cfg.prodSuffix);
 
 	body = html.prettyPrint(body, { indent_size: 2 });
 	// Make sure there is no extra whitespace introduced in Outlook conditional if blocks.
@@ -135,7 +135,7 @@ function loadTemplate(subject, body, callback) {
 	var opts = { encoding: "utf8" };
 
 	async.parallel({
-		styles: async.apply(fs.readFile, path.join(cfg.dest, "styles", "styles.css"), opts),
+		styles: async.apply(fs.readFile, path.join(cfg.compiledStyles), opts),
 		html: async.apply(fs.readFile, cfg.template, opts)
 	}, function (error, results) {
 		if (error) {
@@ -185,8 +185,8 @@ function getAllProductionEmails(callback) {
 			callback(error);
 		} else {
 			var prodEmails = emails.filter(function (email) {
-				return email.indexOf(".test.html") < 0
-					&& email.indexOf(".dev.html") < 0;
+				return email.indexOf(cfg.testSuffix) < 0
+					&& email.indexOf(cfg.devSuffix) < 0;
 			});
 			callback(null, prodEmails);
 		}
