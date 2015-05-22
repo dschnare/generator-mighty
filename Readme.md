@@ -32,6 +32,8 @@ The following structure will be generated for your Mighty project:
 	package.json
 	gulpfile.js
 	gulpfile.config.js
+	template.html
+	.eslintrc
 	.gitignore
 
 The Mighty project generator scaffolds a new Mighty Mail email project. Mighty projects
