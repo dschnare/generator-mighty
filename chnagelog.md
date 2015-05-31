@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.6
+
+*May 31, 2015*
+
+- Resolve incorrect path to `email.tpl.html` in mighty-mail from the app generator.
+
+
 ## 0.3.5
 
 *May 31, 2015*
