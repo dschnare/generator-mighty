@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.7
+
+*May 31, 2015*
+
+- Remove trailing space in email template so ESLINT passes when generating an email.
+
+
 ## 0.3.6
 
 *May 31, 2015*

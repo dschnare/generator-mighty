@@ -15,7 +15,7 @@ var m = require("mighty-mail");
 m.Image.imageBasePath = ".";
 
 // Convenient alias' for using components from mighty-mail.
-// Without these you'll need to reference components like this: 
+// Without these you'll need to reference components like this:
 // <m.Frame>
 // <m.ParaBlock>
 // <m.ListItem>
