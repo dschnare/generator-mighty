@@ -2,6 +2,16 @@
 
 ## 0.3.4
 
+*May 31, 2015*
+
+- Resolve incorrect path to `template.html` in mighty-mail from the app generator.
+- Update mighty-mail to version 2.0.0.
+
+
+## 0.3.4
+
+*May 21, 2015*
+
 - Update Readme with more docs.
 - Add docs to gulpfile and gulpfile.config for the app generator.
 - Add compiledStyles, devSuffix, testSuffix and prodSuffix to gulpfile.config for the app generator.
