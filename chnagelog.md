@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.9
+
+*May 31, 2015*
+
+- Correct spelling of `MediaObject` variable in email template.
+
+
 ## 0.3.8
 
 *May 31, 2015*
