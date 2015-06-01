@@ -83,7 +83,7 @@ gulp.task("bundle", ["build"], function (done) {
 	});
 });
 
-gulp.task("default", ["bundle"]);
+gulp.task("default", ["build"]);
 
 // Helpers
 

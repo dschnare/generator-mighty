@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.8
+
+*May 31, 2015*
+
+- Set default gulp task to `build` instead of `bundle` in the email generator.
+
+
 ## 0.3.7
 
 *May 31, 2015*
