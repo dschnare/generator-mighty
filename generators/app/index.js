@@ -65,7 +65,7 @@ module.exports = generators.Base.extend({
 			"async",
 			"mkdirp",
 			"superagent",
-			"easy-zip",
+			"just-zip",
 			"mighty-mail",
 			"classnames",
 			"glob",

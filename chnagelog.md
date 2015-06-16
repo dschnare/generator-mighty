@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.10
+
+*June 16, 2015*
+
+- Change out easy-zip for just-zip to solve corrupt image issues when unzipping. Update gulpfile accordingly.
+
+
 ## 0.3.9
 
 *May 31, 2015*

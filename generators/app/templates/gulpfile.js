@@ -5,7 +5,7 @@ var fs = require("fs");
 var path = require("path");
 var mkdir = require("mkdirp");
 var html = require("html");
-var EasyZip = require("easy-zip").EasyZip;
+var zip = require("just-zip");
 var request = require("superagent");
 var glob = require("glob");
 var async = require("async");
@@ -194,42 +194,14 @@ function getAllProductionEmails(callback) {
 }
 
 function bundleEmail(email, callback) {
-	var zip = new EasyZip();
 	var basename = path.basename(email, ".html");
-
-	zip.zipFolder(cfg.images, function (error) {
-		if (error) {
-			callback(error);
-		} else {
-			zip.addFile("index.html", email, function (err) {
-				if (err) {
-					callback(err);
-				} else {
-					zip.writeToFile(path.join(cfg.dest, "zips", basename + ".zip"), callback);
-				}
-			});
-		}
-	});
+	var zipFileName = path.join(cfg.dest, "zips", basename + ".zip");
+	zip([cfg.images, email], zipFileName, callback);
 }
 
 function bundleAllEmails(emails, callback) {
-	var zip = new EasyZip();
-
-	zip.zipFolder(cfg.images, function (error) {
-		if (error) {
-			callback(error);
-		} else {
-			async.eachSeries(emails, function (email, cb) {
-				zip.addFile(path.basename(email), email, cb);
-			}, function (error) {
-				if (error) {
-					callback(error);
-				} else {
-					zip.writeToFile(path.join(cfg.dest, "zips", "all.zip"), callback);
-				}
-			});
-		}
-	});
+	var zipFileName = path.join(cfg.dest, "zips", "all.zip");
+	zip([cfg.images].concat(emails), zipFileName, callback);
 }
 
 function inlineCss(html, callback) {
