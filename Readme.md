@@ -14,6 +14,18 @@ A Yeoman generator that uses [Mighty Mail](https://github.com/dschnare/mighty-ma
 	yo mighty:email my-email
 
 
+# Updating
+
+To update a Mighty project to use the latest generator scaffolding run the following.
+
+	npm update generator-mighty -g
+	yo mighty
+
+Follow the promps and choose to overwrite each file when asked.
+
+**NOTE: gulpfile.js, gulp.config.js and package.json will be replaced. Make the appropriate backups if you wish to migrate any of your changes into the new files.**
+
+
 # The Generators
 
 ## Mighty
