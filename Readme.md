@@ -23,7 +23,7 @@ To update a Mighty project to use the latest generator scaffolding run the follo
 
 Follow the promps and choose to overwrite each file when asked.
 
-**NOTE: gulpfile.js, gulp.config.js and package.json will be replaced. Make the appropriate backups if you wish to migrate any of your changes into the new files.**
+**NOTE: gulpfile.js, gulp.config.js, template.html and package.json will be replaced. Make the appropriate backups if you wish to migrate any of your changes into the new files.**
 
 
 # The Generators
