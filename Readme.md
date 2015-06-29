@@ -55,6 +55,11 @@ use [gulp](http://gulpjs.com/) as a build system and comes with a custom gulpfil
 In addition to a `gulpfile` that performs the above tasks there is a `gulp.config.js` file that
 exposes configuration variables for easy configuration of these tasks.
 
+**Note: You must have gulp installed globally in order to run the gulpfile.**
+
+	npm install gulp -g
+
+
 ### Tasks
 
 The following tasks are available to you out of the box.
