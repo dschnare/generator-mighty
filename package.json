@@ -1,13 +1,14 @@
 {
   "name": "generator-mighty",
-  "version": "0.3.10",
+  "version": "1.0.0",
   "description": "Mighty Email generator that uses mighty-mail as its rendering engine.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
     "generators/app",
-    "generators/email"
+    "generators/email",
+    "generators/component"
   ],
   "repository": {
     "type": "git",
@@ -30,7 +31,8 @@
   },
   "homepage": "https://github.com/dschnare/generator-mighty",
   "dependencies": {
-    "mighty-mail": "^2.0.0",
+    "glob": "^5.0.12",
+    "mighty-mail": "^2.0.6",
     "mkdirp": "^0.5.0",
     "yeoman-generator": "^0.19.2"
   }

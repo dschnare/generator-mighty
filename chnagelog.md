@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.0
+
+*June 29, 2015*
+
+- Add generator for creating React components.
+- Create empy zip file before writing any zip file to circumvent a faulty ENOENT check in just-zip.
+- Refactor gulp.config.js by cleaning up source paths and adding `lib` setting.
+- Refactor gulpfile.js to rely on modules in a Mighty project's lib/ directory.
+- Refactor all task-oriented code into the Mighty project's lib/ directory.
+- Integrate BrowserSync into gulpfile tasks via the 'serve' task.
+- Add the task 'update' to make it easier to update a mighty project.
+
+
 ## 0.3.10
 
 *June 16, 2015*

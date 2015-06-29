@@ -1,27 +1,38 @@
-/// <reference path="../../typings/node/node.d.ts"/>
 "use strict";
 
 
 var generators = require("yeoman-generator");
 var path = require("path");
 var mkdir = require("mkdirp");
+var glob = require("glob");
 
 
 module.exports = generators.Base.extend({
 	constructor: function () {
 		generators.Base.apply(this, arguments);
 		this.option("sass");
-	},	
+	},
 	createFolders: function () {
 		mkdir.sync(this.destinationPath("images"));
 		mkdir.sync(this.destinationPath("emails"));
 		mkdir.sync(this.destinationPath("build"));
 	},
 	copyFiles: function () {
-		this.fs.copy(this.templatePath("gulp.config.js"), this.destinationPath("gulp.config.js"));
-		this.fs.copyTpl(this.templatePath("gulpfile.js"), this.destinationPath("gulpfile.js"), {
-			sass: this.options.sass
+		var self = this;
+		var files = glob.sync("**/*.*", { cwd: this.templatePath(".") });
+
+		files.forEach(function (file) {
+			self.fs.copy(self.templatePath(file), self.destinationPath(file));
 		});
+
+		// Replace the compileStyles module because it's templated.
+		this.fs.copyTpl(
+			this.templatePath("lib/tasks/compileStyles/index.js"),
+			this.destinationPath("lib/tasks/compileStyles/index.js"),
+			{
+				sass: this.options.sass
+			}
+		);
 	},
 	createGitignore: function () {
 		this.fs.write(this.destinationPath(".gitignore"), [
