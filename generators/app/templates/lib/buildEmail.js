@@ -35,6 +35,8 @@ function buildEmail(emailJsFile, callback) {
 	// Make sure there is no extra whitespace
 	// introduced in Outlook conditional if blocks.
 	body = body.replace(/<!--\[if\s+/g, "<!--[if ");
+	// Make sure there are no spaces added before superscript and subscripts.
+	body = body.replace(/(\S)(\n|\s)+\<(sup|sub)/g, "$1<$3");
 
 	loadEmailTemplate(subject, body, function (error, emailHtml) {
 		if (error) {

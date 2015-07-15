@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1
+
+*July 15, 2015*
+
+- Remove extra spacing added by pretty HTML module before `<sup>` and `<sub>` elements and text.
+
+
 ## 1.0.0
 
 *June 29, 2015*
