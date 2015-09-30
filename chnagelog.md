@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.2
+
+*September 30, 2015*
+
+- Copy empty.gif to images from mighty mail.
+
+
 ## 1.0.1
 
 *July 15, 2015*

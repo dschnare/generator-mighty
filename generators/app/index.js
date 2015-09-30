@@ -61,6 +61,11 @@ module.exports = generators.Base.extend({
 	copyEmailTemplate: function () {
 		var tplFile = path.join(this.templatePath(), "..", "..", "..", "node_modules", "mighty-mail", "templates", "email.tpl.html");
 		this.fs.copy(tplFile, this.destinationPath("template.html"));
+
+		tplFile = path.join(this.templatePath(), "..", "..", "..", "node_modules", "mighty-mail", "templates", "empty.gif");
+		if (this.fs.exists(tplFile)) {
+			this.fs.copy(tplFile, this.destinationPath("images/empty.gif"));
+		}
 	},
 	createPackageJson: function () {
 		this.fs.write(this.destinationPath("package.json"), JSON.stringify({
