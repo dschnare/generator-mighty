@@ -77,7 +77,7 @@ module.exports = generators.Base.extend({
 	installDeps: function () {
 		var styleDeps = this.options.sass ? "gulp-sass" : "gulp-less";
 		var deps = [
-			"react",
+			"react@0.13.0",
 			"async",
 			"mkdirp",
 			"superagent",
