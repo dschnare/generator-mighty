@@ -1,19 +1,16 @@
 "use strict";
 
-var request = require("superagent");
+var juice = require("juice");
 
 
 function inlineCss(html, callback) {
-	request.post("http://inliner.cm/inline.php")
-		.type("form")
-		.send({ code: html })
-		.end(function (err, response) {
-			if (err) {
-				callback(err);
-			} else {
-				callback(null, response.body.HTML);
-			}
-		});
+	var newHtml = juice(html, {
+		removeStyleTags: false,
+		preserveImportant: true,
+		xmlMode: true,
+		preserveMediaQueries: true
+	});
+	callback(null, newHtml);
 }
 
 module.exports = inlineCss;

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.4
+
+*November 18, 2015*
+
+- Change CSS inliner to use [Juice](https://www.npmjs.com/package/juice) instead of CM Inliner via HTTP.
+
+
 ## 1.0.2
 
 *September 30, 2015*
